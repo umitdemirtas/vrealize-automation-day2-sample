@@ -1,0 +1,38 @@
+inputs:
+  environment:
+    type: string
+    title: Select Environment
+    default: AWS
+    enum:
+      - AWS
+      - AZURE
+      - vSphere
+  os:
+    type: string
+    title: Select Operating System
+    default: Ubuntu
+    enum:
+      - Ubuntu
+      - Centos
+  envsize:
+    type: string
+    title: Select Size
+    default: Small
+    enum:
+      - Micro
+      - Small
+  count:
+    type: number
+    default: 1
+    title: Select VM Count
+    maximum: 5
+resources:
+  Cloud_Machine_1:
+    type: Cloud.Machine
+    properties:
+      image: '${to_lower(input.os)}'
+      flavor: '${to_lower(input.envsize)}'
+      count: '${input.count}'
+      constraints:
+        - tag: '${"env:" + to_lower(input.environment)}'
+      networks: []
